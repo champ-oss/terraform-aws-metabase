@@ -72,6 +72,10 @@ resource "aws_s3_bucket" "this" {
     }
   }
 
+  versioning {
+    enabled = true
+  }
+
   lifecycle_rule {
     enabled = true
 
