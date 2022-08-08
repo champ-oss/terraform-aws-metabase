@@ -16,6 +16,7 @@ resource "aws_rds_cluster" "this" {
   deletion_protection             = var.protect
   enable_http_endpoint            = true
   tags                            = var.tags
+  enable_global_write_forwarding  = var.enable_global_write_forwarding
 
   scaling_configuration {
     auto_pause   = var.auto_pause
@@ -25,7 +26,11 @@ resource "aws_rds_cluster" "this" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes        = [snapshot_identifier, final_snapshot_identifier]
+    ignore_changes = [
+      snapshot_identifier,
+      final_snapshot_identifier,
+      engine_version
+    ]
   }
 }
 
