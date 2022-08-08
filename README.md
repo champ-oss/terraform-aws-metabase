@@ -93,6 +93,7 @@ No modules.
 | <a name="input_db_cluster_parameter_group_name"></a> [db\_cluster\_parameter\_group\_name](#input\_db\_cluster\_parameter\_group\_name) | https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#db_cluster_parameter_group_name | `string` | `""` | no |
 | <a name="input_desired_count"></a> [desired\_count](#input\_desired\_count) | https://www.terraform.io/docs/providers/aws/r/ecs_service.html#desired_count | `number` | `1` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | Domain where metabase will be hosted. Example: metabase.mycompany.com | `string` | n/a | yes |
+| <a name="input_enable_global_write_forwarding"></a> [enable\_global\_write\_forwarding](#input\_enable\_global\_write\_forwarding) | https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster#enable_global_write_forwarding | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Additional container environment variables | `list(string)` | `[]` | no |
 | <a name="input_https_egress_only"></a> [https\_egress\_only](#input\_https\_egress\_only) | Grant outbound internet access to Metabase for http and https only | `bool` | `false` | no |
 | <a name="input_id"></a> [id](#input\_id) | Unique identifier for naming resources | `string` | `"metabase"` | no |
