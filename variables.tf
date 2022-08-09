@@ -135,3 +135,9 @@ variable "ingress_source_security_group_ids" {
   type        = set(string)
   default     = []
 }
+
+variable "enable_global_write_forwarding" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster#enable_global_write_forwarding"
+  type        = bool
+  default     = false
+}
