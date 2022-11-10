@@ -51,7 +51,7 @@ locals {
       secrets = [
         {
           name      = "MB_DB_PASS"
-          valueFrom = aws_ssm_parameter.this.name
+          valueFrom = module.aurora.master_password
         },
       ]
 
@@ -84,19 +84,19 @@ locals {
     },
     {
       name  = "MB_DB_DBNAME"
-      value = aws_rds_cluster.this.database_name
+      value = module.aurora.database_name
     },
     {
       name  = "MB_DB_PORT"
-      value = tostring(aws_rds_cluster.this.port)
+      value = tostring(module.aurora.port)
     },
     {
       name  = "MB_DB_USER"
-      value = aws_rds_cluster.this.master_username
+      value = module.aurora.master_username
     },
     {
       name  = "MB_DB_HOST"
-      value = aws_rds_cluster.this.endpoint
+      value = module.aurora.endpoint
     },
   ]
 }

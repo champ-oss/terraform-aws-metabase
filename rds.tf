@@ -1,107 +1,20 @@
-resource "aws_rds_cluster" "this" {
-  cluster_identifier_prefix       = "${var.id}-"
-  final_snapshot_identifier       = "${var.id}-${formatdate("YYYYMMDDhhmmss", timestamp())}"
-  copy_tags_to_snapshot           = true
-  engine                          = "aurora-mysql"
-  engine_mode                     = "serverless"
-  engine_version                  = "5.7.mysql_aurora.2.07.1" # cannot be modified after creation
-  database_name                   = "metabase"
-  master_username                 = "root"
-  master_password                 = random_password.this.result
+module "aurora" {
+  source                          = "github.com/champ-oss/terraform-aws-aurora.git?ref=16c9737ce9c4584e0fde780a6db8b4f3ba7534e7"
   backup_retention_period         = 5 # days
-  snapshot_identifier             = var.snapshot_identifier
-  vpc_security_group_ids          = [aws_security_group.rds.id]
-  db_subnet_group_name            = aws_db_subnet_group.this.id
+  cluster_identifier_prefix       = "${var.id}-"
+  cluster_instance_count          = var.cluster_instance_count
+  database_name                   = "metabase"
   db_cluster_parameter_group_name = var.db_cluster_parameter_group_name
-  deletion_protection             = var.protect
-  enable_http_endpoint            = true
-  tags                            = var.tags
   enable_global_write_forwarding  = var.enable_global_write_forwarding
-
-  scaling_configuration {
-    auto_pause   = var.auto_pause
-    min_capacity = 1
-    max_capacity = var.max_capacity
-  }
-
-  lifecycle {
-    create_before_destroy = true
-    ignore_changes = [
-      snapshot_identifier,
-      final_snapshot_identifier,
-      engine_version
-    ]
-  }
-}
-
-resource "random_password" "this" {
-  length  = 32
-  special = false
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_ssm_parameter" "this" {
-  name        = var.id
-  description = "RDS password"
-  type        = "SecureString"
-  value       = random_password.this.result
-  tags        = var.tags
-}
-
-resource "aws_secretsmanager_secret" "this" {
-  name                    = "rds-db-credentials/${aws_rds_cluster.this.cluster_resource_id}/${var.id}"
-  description             = "RDS credentials for use in query editor"
-  recovery_window_in_days = 0
-  tags                    = var.tags
-}
-
-locals {
-  secret = {
-    dbInstanceIdentifier = aws_rds_cluster.this.cluster_identifier
-    engine               = aws_rds_cluster.this.engine
-    dbname               = aws_rds_cluster.this.database_name
-    host                 = aws_rds_cluster.this.endpoint
-    port                 = aws_rds_cluster.this.port
-    resourceId           = aws_rds_cluster.this.cluster_resource_id
-    username             = aws_rds_cluster.this.master_username
-    password             = random_password.this.result
-  }
-}
-
-resource "aws_secretsmanager_secret_version" "this" {
-  secret_id     = aws_secretsmanager_secret.this.id
-  secret_string = jsonencode(local.secret)
-}
-
-resource "aws_db_subnet_group" "this" {
-  name_prefix = "${var.id}-"
-  subnet_ids  = var.private_subnet_ids
-  tags        = var.tags
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_security_group" "rds" {
-  name_prefix = "${var.id}-rds-"
-  vpc_id      = var.vpc_id
-  tags        = var.tags
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_security_group_rule" "rds_ingress_ecs" {
-  description              = "ECS"
-  type                     = "ingress"
-  from_port                = aws_rds_cluster.this.port
-  to_port                  = aws_rds_cluster.this.port
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.rds.id
-  source_security_group_id = aws_security_group.ecs.id
+  git                             = var.id
+  master_username                 = "root"
+  max_capacity                    = var.max_capacity
+  metric_alarms_enabled           = true
+  protect                         = var.protect
+  private_subnet_ids              = var.private_subnet_ids
+  skip_final_snapshot             = false
+  snapshot_identifier             = var.snapshot_identifier
+  source_security_group_id        = aws_security_group.ecs.id
+  tags                            = var.tags
+  vpc_id                          = var.vpc_id
 }

@@ -48,7 +48,7 @@ resource "aws_security_group_rule" "ecs_egress_rds" {
   to_port                  = 0
   protocol                 = "-1"
   security_group_id        = aws_security_group.ecs.id
-  source_security_group_id = aws_security_group.rds.id
+  source_security_group_id = module.aurora.security_group_id
 }
 
 resource "aws_security_group_rule" "ecs_ingress_alb" {

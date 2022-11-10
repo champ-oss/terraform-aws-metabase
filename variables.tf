@@ -23,6 +23,12 @@ variable "certificate_arn" {
   type        = string
 }
 
+variable "cluster_instance_count" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_instance"
+  type        = number
+  default     = 1
+}
+
 variable "vpc_id" {
   description = "https://www.terraform.io/docs/providers/aws/r/security_group.html#vpc_id"
   type        = string
@@ -61,7 +67,7 @@ variable "memory" {
 variable "max_capacity" {
   description = "https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#max_capacity"
   type        = number
-  default     = 1
+  default     = 8
 }
 
 variable "desired_count" {
