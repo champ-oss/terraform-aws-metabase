@@ -124,12 +124,6 @@ variable "db_cluster_parameter_group_name" {
   default     = ""
 }
 
-variable "auto_pause" {
-  description = "https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#auto_pause"
-  type        = bool
-  default     = false
-}
-
 variable "ingress_cidr_blocks" {
   description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule#cidr_blocks"
   type        = list(string)
