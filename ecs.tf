@@ -51,7 +51,7 @@ locals {
       secrets = [
         {
           name      = "MB_DB_PASS"
-          valueFrom = module.aurora.master_password
+          valueFrom = module.aurora.password_ssm_name
         },
       ]
 
