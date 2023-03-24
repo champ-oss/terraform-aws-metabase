@@ -24,6 +24,7 @@ resource "aws_ecs_service" "this" {
   propagate_tags                    = "SERVICE"
   health_check_grace_period_seconds = 30
   depends_on                        = [aws_lb_listener_rule.this]
+  wait_for_steady_state             = true
   tags                              = var.tags
 
   load_balancer {
