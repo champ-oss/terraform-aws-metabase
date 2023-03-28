@@ -22,7 +22,7 @@ resource "aws_ecs_service" "this" {
   desired_count                     = var.desired_count
   launch_type                       = "FARGATE"
   propagate_tags                    = "SERVICE"
-  health_check_grace_period_seconds = 30
+  health_check_grace_period_seconds = 300
   depends_on                        = [aws_lb_listener_rule.this]
   wait_for_steady_state             = true
   tags                              = var.tags
@@ -111,7 +111,8 @@ resource "aws_lb_target_group" "this" {
   tags        = var.tags
 
   health_check {
-    path = "/"
+    path              = "/api/health"
+    healthy_threshold = 5
   }
 }
 
