@@ -1,6 +1,6 @@
 resource "aws_ecs_cluster" "this" {
-  name               = var.id
-  tags               = var.tags
+  name = var.id
+  tags = var.tags
 }
 
 resource "aws_ecs_task_definition" "this" {
