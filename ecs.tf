@@ -1,7 +1,6 @@
 resource "aws_ecs_cluster" "this" {
-  name               = var.id
-  capacity_providers = ["FARGATE"]
-  tags               = var.tags
+  name = var.id
+  tags = var.tags
 }
 
 resource "aws_ecs_task_definition" "this" {
@@ -37,6 +36,11 @@ resource "aws_ecs_service" "this" {
     security_groups = [aws_security_group.ecs.id]
     subnets         = tolist(var.private_subnet_ids)
   }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "this" {
+  cluster_name       = aws_ecs_cluster.this.name
+  capacity_providers = ["FARGATE"]
 }
 
 data "aws_region" "this" {}
