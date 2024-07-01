@@ -1,5 +1,5 @@
 module "aurora" {
-  source                          = "github.com/champ-oss/terraform-aws-aurora.git?ref=v1.0.53-f6c6cd6"
+  source                          = "github.com/champ-oss/terraform-aws-aurora.git?ref=v1.0.55-ed51e39"
   backup_retention_period         = 5 # days
   cluster_identifier_prefix       = var.id
   cluster_instance_count          = var.cluster_instance_count
