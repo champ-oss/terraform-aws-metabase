@@ -8,6 +8,7 @@ module "aurora" {
   enable_global_write_forwarding  = var.enable_global_write_forwarding
   git                             = var.id
   master_username                 = "root"
+  min_capacity                    = var.min_capacity
   max_capacity                    = var.max_capacity
   metric_alarms_enabled           = true
   protect                         = var.protect
