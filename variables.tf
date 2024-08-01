@@ -64,6 +64,12 @@ variable "memory" {
   default     = 2048
 }
 
+variable "min_capacity" {
+  description = "https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#min_capacity"
+  type        = number
+  default     = 1
+}
+
 variable "max_capacity" {
   description = "https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#max_capacity"
   type        = number
